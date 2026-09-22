@@ -1,28 +1,29 @@
-# Deep Surrogate Modeling for Chemical Reactor Optimization
+# Deep Surrogate Modeling for Exothermic CSTR Optimization
 
 ## 📌 Project Overview
-This repository introduces a physics-informed deep learning framework focused on **Deep Surrogate Modeling** to accelerate the simulation and real-time optimization of chemical reactors. Traditional chemical process optimization relies heavily on solving complex, coupled systems of non-linear differential equations (e.g., mass, energy, and momentum balances). While highly accurate, these mechanistic models (like rigorous CFD or Aspen Plus simulations) are computationally expensive and impractical for real-time control loops.
+This repository delivers an integrated **Chemical Engineering and Deep Learning framework** designed for the high-fidelity optimization of a nonlinear, exothermic Continuous Stirred-Tank Reactor (CSTR). The system models the consecutive reaction kinetics of **A → B → C**, where **B** represents the highly desired target product. 
 
-This project bridges that gap by training **Deep Neural Networks (DNNs)** as high-fidelity surrogate models. The trained deep surrogate acts as a "black-box" digital twin, predicting reactor outputs (conversion rates, temperature profiles, yield, selectivity) in milliseconds with near-mechanistic accuracy. This enables rapid multi-objective optimization, allowing operators to safely maximize yield while minimizing energy expenditure.
+By replacing computationally demanding, iterative first-principles numerical models with a multi-output **Deep Neural Network (DNN) surrogate**, this workflow achieves significant computational acceleration. The resulting digital twin framework enables instantaneous, real-time multi-variable process design workflows and optimization loops without sacrificing the underlying physical rigor of the system.
 
 ## 🛠️ Tech Stack & Libraries
 * **Language:** Python
-* **Deep Learning Frameworks:** PyTorch / TensorFlow (Choose your active framework)
-* **Optimization & Math:** SciPy (Optimization module), NumPy, Pandas
+* **Deep Learning Framework:** TensorFlow / Keras
+* **Data Processing & Analytics:** Scikit-learn, Pandas, NumPy
+* **Numerical Modeling & Optimization:** SciPy (Differential Evolution)
 * **Visualization:** Matplotlib, Seaborn
-* **Mechanistic Data Generation:** (Optional: Mention if you used Aspen Plus, MATLAB, or native Python ODE solvers to generate data)
 
 ## 📁 Repository Structure
-* `src/` - Core source scripts containing neural network architectures, custom loss functions, and optimization algorithms.
-* `notebooks/` - Step-by-step Jupyter Notebooks demonstrating data processing, model training, validation curves, and optimization runs.
-* `data/` - Training, validation, and testing datasets generated from rigorous reactor simulation sweeps.
-* `models/` - Saved weights (`.pt` or `.h5` files) and configurations for the trained deep surrogate networks.
-* `results/` - Performance evaluations, parity plots comparing mechanistic vs. surrogate outputs, and optimization surface maps.
-* `requirements.txt` - File detailing dependencies and library versions required to run the code.
+* `src/` - Core Python modules containing the physics-based ODE reactor simulator, custom DNN architectures, and optimization logic.
+* `notebooks/` - Jupyter Notebooks mapping out exploratory data sweeps, surrogate network training phases, and optimization convergence.
+* `data/` - Training, validation, and benchmarking datasets generated via Latin Hypercube Sampling.
+* `models/` - Saved weights, model architectures, and serialized configurations for the trained TensorFlow/Keras neural networks.
+* `results/` - Validation metrics, parity plots, computational acceleration benchmarks, and verified reactor setpoints.
+* `requirements.txt` - Configuration file detailing library dependencies for easy environment replication.
 
 ## ⚙️ Core Methodologies & Engineering Workflow
-1. **Data Generation & Sampling:** Generated high-dimensional datasets by sweeping key operational variables (e.g., space velocity, feed temperature, catalyst activity, inlet concentrations) using Latin Hypercube Sampling (LHS).
-2. **Surrogate Architecture Selection:** Designed and trained Multi-Layer Perceptrons (MLPs) / Residual Networks (ResNets) to map non-linear input-output relations of the reactor.
-3. **Loss Function Engineering:** Integrated physics-guided boundary constraints (e.g., preventing negative concentrations or ensuring mass balance approximations) into the neural network training loop.
-4. **Surrogate Validation:** Evaluated accuracy using strict engineering metrics including Mean Absolute Percentage Error (MAPE), R² parity metrics, and maximum absolute error bounds.
-5. **Real-time Optimization:** Coupled the fast-executing surrogate model with global/local optimization algorithms (e.g., Genetic Algorithms, Particle Swarm Optimization, or Sequential Least Squares Programming) to discover optimal reactor setpoints instantaneously.
+1. **First-Principles Modeling:** Developed a rigorous, physics-based CSTR model using material balances, energy balances, and temperature-dependent **Arrhenius reaction kinetics**.
+2. **Advanced Data Generation:** Employed **Latin Hypercube Sampling (LHS)** to execute thousands of physical reactor simulations, uniformly mapping out the operational boundary spaces.
+3. **Deep Surrogate Architecture:** Built and trained a multi-output **Deep Neural Network (DNN)** to map operating and design inputs directly to critical steady-state outputs, including **reactor temperature and species concentrations**.
+4. **Rigorous Validation:** Evaluated surrogate predictive precision and generalization limits against unseen validation data using **Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), R² scores**, and detailed visual **parity plots**.
+5. **Metaheuristic Optimization:** Integrated the rapid-executing DNN surrogate with a constrained **Differential Evolution algorithm** to discover the precise operating conditions that maximize the concentration of desired product **B**.
+6. **Physics Verification & Benchmarking:** Cross-verified the optimal machine learning setpoints by running them back through the original mechanistic model, followed by a formal computational benchmark validating the order-of-magnitude processing speedup.
